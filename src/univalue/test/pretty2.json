@@ -1,0 +1,15 @@
+[
+    [
+        "Lambda Core",
+        "Lambda ABC",
+        "Lambda Node"
+    ],
+    "Lambda Classic",
+    "Lambda Unlimited",
+    "Lambda XT",
+    {
+        "SPV": [
+            "Electron Cash"
+        ]
+    }
+]

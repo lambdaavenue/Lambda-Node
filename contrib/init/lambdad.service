@@ -1,0 +1,22 @@
+[Unit]
+Description=Lambda Node Daemon
+After=network.target
+
+[Service]
+User=lambda
+Group=lambda
+
+Type=forking
+PIDFile=/var/lib/lambdad/lambdad.pid
+ExecStart=/usr/bin/lambdad -daemon -pid=/var/lib/lambdad/lambdad.pid \
+-conf=/etc/lambda/lambda.conf -datadir=/var/lib/lambdad -disablewallet
+
+Restart=always
+PrivateTmp=true
+TimeoutStopSec=60s
+TimeoutStartSec=2s
+StartLimitInterval=120s
+StartLimitBurst=5
+
+[Install]
+WantedBy=multi-user.target
