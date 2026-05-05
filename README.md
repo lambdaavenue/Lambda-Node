@@ -1,90 +1,115 @@
+# Lambda Node
 
-Lambda Node
-=================
+## Overview
 
-The goal of Lambda Node is to create sound money that is usable by everyone
-in the world. We believe this is a civilization-changing technology which will
-dramatically increase human flourishing, freedom, and prosperity. The project
-aims to achieve this goal by implementing a series of optimizations and
-protocol upgrades that will enable peer-to-peer digital cash to scale many
-orders of magnitude beyond current limits.
+Lambda Node is a blockchain implementation designed to support a peer-to-peer digital currency system focused on scalability, decentralization, and efficient transactions.
 
-What is Lambda?
----------------------
+The goal of the project is to provide a foundation for a global, permissionless payment network that enables fast and low-cost value transfer without central authorities.
 
-Lambda is a digital currency that enables instant payments to anyone,
-anywhere in the world. It uses peer-to-peer technology to operate with no
-central authority: managing transactions and issuing money are carried out
-collectively by the network. Lambda is a descendant of Lambda. It became
-a separate currency from the version supported by Lambda Core .
-Lambda and the Lambda Core version of Lambda
-share the same transaction history up until the split.
+---
 
-What is Lambda Node?
---------------------------
+## What is Lambda?
 
-[Lambda Node](https://www.lambdablockchain.com) is the name of open-source
-software which enables the use of Lambda. It is a descendant of the
-[Lambda project](https://lambdablockchain.com) 
-software projects.
+Lambda is a digital currency that enables instant payments to anyone, anywhere in the world.
 
-License
--------
+It operates on a peer-to-peer network where:
+- Transactions are validated by the network
+- No central authority controls issuance or transfers
+- The system is designed for decentralized financial exchange
 
-Lambda Node is released under the terms of the MIT license. See
-[COPYING](COPYING) for more information or see
-[https://opensource.org/licenses/MIT](https://opensource.org/licenses/MIT).
+Lambda Node is a full node implementation that maintains the network and validates transactions.
 
-This product includes software developed by the OpenSSL Project for use in the
-[OpenSSL Toolkit](https://www.openssl.org/), cryptographic software written by
-[Eric Young](mailto:eay@cryptsoft.com), and UPnP software written by Thomas
-Bernard.
 
-Development Process
--------------------
+---
 
-Lambda Node development takes place at [https://github.com/lambdablockchain/lambda-node](https://github.com/lambdablockchain/lambda-node)
+## Third-Party Software
 
-This Github repository contains only source code of releases.
+This project includes software developed by:
+- The OpenSSL Project (OpenSSL Toolkit)
+- Eric Young (cryptographic software)
+- Thomas Bernard (UPnP implementation)
 
-If you would like to contribute, please contact us directly at
-[discord.gg/7wVsGxgX](https://discord.gg/7wVsGxgX) or [t.me/lambdablockchain]( https://t.me/lambdablockchain)
+---
 
-build-node using unix 
------------------
+
+## Build Instructions (Linux)
+
+### 1. Install dependencies
 
 ```bash
-sudo apt-get install build-essential cmake git libboost-chrono-dev libboost-filesystem-dev libboost-test-dev libboost-thread-dev libevent-dev libminiupnpc-dev libssl-dev libzmq3-dev help2man ninja-build python3 clang-tidy libminiupnpc-dev libdb++-dev qttools5-dev qttools5-dev-tools qtbase5-dev protobuf-compiler libprotobuf-dev libqrcodegen-dev pkg-config libtool autoconf automake libevent-dev ca-certificates libcurl4-openssl-dev apt-utils dos2unix
+sudo apt-get update
+
+sudo apt-get install -y \
+build-essential cmake git ninja-build pkg-config \
+libboost-chrono-dev libboost-filesystem-dev libboost-test-dev libboost-thread-dev \
+libevent-dev libssl-dev libzmq3-dev \
+libminiupnpc-dev libdb++-dev \
+qttools5-dev qttools5-dev-tools qtbase5-dev \
+protobuf-compiler libprotobuf-dev libqrcodegen-dev \
+libtool autoconf automake \
+libcurl4-openssl-dev ca-certificates dos2unix
 ```
 
+---
+
+### 2. Clone repository
+
 ```bash
-git clone https://github.com/lambdablockchain/lambda-node.git
+git clone https://github.com/lambdaavenue/Lambda-Node.git
+cd Lambda-Node
+```
 
-cd lambda-node
+---
 
+### 3. Build
+
+```bash
 mkdir build
-
 cd build
 
-cmake -GNinja  .. -DBUILD_LAMBDA_QT=OFF -DENABLE_UPNP=OFF -DENABLE_MAN=OFF -DBUILD_LAMBDA_SEEDER=OFF -DBUILD_LAMBDA_ZMQ=ON
-
-find ../ -name "*.sh" -exec dos2unix {} \; -exec chmod +x {} \;
-
-find ../ -name "*.py" -exec dos2unix {} \; -exec chmod +x {} \;
+cmake -GNinja .. \
+-DBUILD_LAMBDA_QT=ON \
+-DENABLE_UPNP=OFF \
+-DENABLE_MAN=OFF \
+-DBUILD_LAMBDA_SEEDER=OFF \
+-DBUILD_LAMBDA_ZMQ=ON
 
 ninja
 ```
 
-when install completeted create new file in .lambda directory name : lambda.conf add this lines
------------------------------------------------------------------------------------------------
+---
+
+### 4. Fix permissions (if needed)
+
 ```bash
+find ../ -name "*.sh" -exec dos2unix {} \; -exec chmod +x {} \;
+find ../ -name "*.py" -exec dos2unix {} \; -exec chmod +x {} \;
+
+chmod -R +x .
+```
+If it still gives some permission issue, then just give this command: chmod -R +x /path/to/your/project.
+Rerun cmake and ninja. Don't clean before
+
+---
+
+## Configuration
+
+Create the configuration file:
+
+```
+~/.lambda/lambda.conf
+```
+
+Example configuration:
+
+```ini
 server=1
 txindex=1
 acceptnonstdtxn=0
 dns=1
 listen=1
-rpcuser=user
-rpcpassword=pass
+rpcuser=CHANGE_ME
+rpcpassword=CHANGE_ME_STRONG_PASSWORD
 rpcport=9332
 addnode=145.239.0.137:11029
 addnode=51.75.144.177:21029
@@ -93,12 +118,43 @@ addnode=89.117.149.130:9333
 addnode=66.94.115.80:9333
 addnode=173.212.224.67:9333
 ```
-save and run ./lambdad ./lambda-cli 
-PS: Lambda-qt is not fully developed please do not use it
 
-Further info
-------------
+⚠️ Do not use default credentials in production.
 
-See [doc/README.md](doc/README.md) for further info on installation, building,
-development and more.
+---
 
+## Running the Node
+
+```bash
+./lambdad
+```
+
+CLI:
+
+```bash
+./lambda-cli
+```
+
+---
+
+## Qt Wallet
+
+The Qt wallet is included.
+
+It supports legacy and Bech addresses depending on configuration and pool requirements.
+
+To generate a legacy address by the console of the QT:
+
+```bash
+getnewaddress "" legacy
+```
+
+---
+
+## Additional Information
+
+See:
+
+```
+doc/README.md
+```
